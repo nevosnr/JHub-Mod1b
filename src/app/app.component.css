@@ -10,6 +10,35 @@
 
 
 .API{
-  position: absolute;
-  right: 50%
+  position: fixed;
+}
+
+.map{
+  position: fixed;
+  bottom: 0;
+  height: 40vh;
+  width: 100vw;
+}
+.mapbox{
+  position: fixed;
+  bottom: 0;
+}
+#map{
+  height: 100%;
+}
+.mat-tab-group {
+  margin-bottom: 48px;
+  width: 100vw;
+}
+
+.example-container {
+  position: relative;
+}
+
+.example-table-container {
+  position: relative;
+  min-height: 200px;
+  max-height: 400px;
+  height: 20vh;
+  overflow: auto;
 }
