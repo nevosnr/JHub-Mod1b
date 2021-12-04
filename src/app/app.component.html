@@ -1,15 +1,11 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <span>Police Crime watch</span>
+    <span><h1 class="title">{{title}}</h1>Police Street Crime Fetcher</span>
   </mat-toolbar-row>
 </mat-toolbar>
 <div class="home">
-  <div class="toppart">
-    <h1 class="title">{{title}}</h1>
-  </div>
-
   <div class="API">
-    <form class="example-form">
+    <form class="form">
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Postcode</mat-label>
         <input matInput [formControl]="postcodeFormControl" placeholder="Ex. SW1A 1AA">
@@ -18,13 +14,8 @@
         </mat-error>
       </mat-form-field>
       <button mat-raised-button color="primary" (click)="submit()">Submit</button>
-
-
     </form>
      <mat-tab-group mat-align-tabs="center">
-      <mat-tab label="Stop and searches by area">
-        <button mat-raised-button color="primary" (click)="getStopAndSearch()">getStopAndSearch</button>
-      </mat-tab>
       <mat-tab label="Street-level crimes">
         <div class="example-table-container">
             <mat-table [dataSource]="pageSlice" class="mat-elevation-z8">
@@ -49,7 +40,11 @@
               <!-- Symbol Column -->
               <ng-container matColumnDef="symbol">
                 <mat-header-cell *matHeaderCellDef> outcome_status </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.outcome_status | json }} </mat-cell>
+                <mat-cell *matCellDef="let row">
+                  <div>
+                    {{row.outcome_status | json }}
+                  </div>
+                </mat-cell>
               </ng-container>
 
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -62,32 +57,12 @@
                           (page)="OnPageChange($event)"
           ></mat-paginator>
       </mat-tab>
-      <mat-tab label="getPoliceStations">
-        <div class="example-table-container">
-          <mat-table [dataSource]="PoliceStations" class="mat-elevation-z8">
-            <!-- Position Column -->
-            <ng-container matColumnDef="position">
-              <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
-              <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
-            </ng-container>
-
-            <!-- Name Column -->
-            <ng-container matColumnDef="name">
-              <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-              <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
-            </ng-container>
-
-            <mat-header-row *matHeaderRowDef="displayedColumns2"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedColumns2;"></mat-row>
-          </mat-table>
-        </div>
-        <mat-paginator  [length]="PoliceDataPageCount"
-                        [pageSize]="10"
-                        [pageSizeOptions]="[5,10,20,50,100]"
-                        (page)="OnPageChange($event)"
-        ></mat-paginator>
-      </mat-tab>
     </mat-tab-group>
+  </div>
+  <div class="flexcontainer">
+    <div>
+      <mat-card class="infoCard">The individual street crimes will be marked on the map below </mat-card>
+    </div>
   </div>
   <div class="mapbox" >
     <div class="map" #mapElement></div>

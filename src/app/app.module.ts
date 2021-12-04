@@ -13,6 +13,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { MatChipsModule } from '@angular/material/chips';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { MatChipsModule } from '@angular/material/chips';
     MatTabsModule,
     MatPaginatorModule,
     MatChipsModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -22,12 +22,12 @@ export class AppComponent implements OnInit, AfterViewInit {
   public APIReturns: any = {"longitude": 150.644, "latitude": -34.397,}
   public policeData: any = []
   public pageSlice = this.policeData.slice(0, 10);
-  public PoliceStations: any = []
   public positions: any
   public positionsArray: any[] = []
   postcodeData: string
   map: any;
   PoliceDataPageCount = 0;
+  PoliceStationsPageCount = 0
   @ViewChild("mapElement") mapElement: any;
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   displayedColumns2: string[] = ['position', 'name'];
@@ -37,7 +37,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   postcodeFormControl = new FormControl('', [Validators.required]);
 
   constructor(private http: HttpClient) {}
-
 
   // https://material.angular.io/components/table/examples
 
@@ -59,29 +58,19 @@ export class AppComponent implements OnInit, AfterViewInit {
     const positions = this.policeData.location
     const marker1 = new google.maps.Marker({
       position : {lat:53.045122,lng:-0.384205},
-      map: this.map
+      map: this.map,
+      icon: "../assets/police.png",
     })
 
   }
 
 
-  getPoliceStations(){
-    // TODO
-    // https://data.police.uk/docs/method/neighbourhoods/
-    const policeURLDatajson = {"":this.APIReturns.admin_county, "/neighbourhoods": ""}
-    const policeURLData = JSON.stringify(policeURLDatajson).replace(/[{}":,]/g, '').toLocaleLowerCase();
-    this.http.get("https://data.police.uk/api/" + policeURLData).subscribe((data: any) => this.PoliceStations = data)
-  }
 
-  getStopAndSearch(){
-    // TODO
-    // https://data.police.uk/docs/method/stops-street/
-  }
 
   getPoliceData(){
     const policeURLDatajson = {"lat=": this.APIReturns.latitude, "&lng=": this.APIReturns.longitude}
     const policeURLData = JSON.stringify(policeURLDatajson).replace(/[{}":,]/g, '');
-    this.http.get("https://data.police.uk/api/crimes-street/all-crime?" + policeURLData).subscribe((data: any) => this.policeData = data ).add(() => { console.log(this.policeData), this.PoliceDataPageCount = this.policeData.length, this.pageSlice = this.policeData.slice(0, 10)
+    this.http.get("https://data.police.uk/api/crimes-street/all-crime?" + policeURLData).subscribe((data: any) => this.policeData = data ).add(() => { this.PoliceDataPageCount = this.policeData.length, this.pageSlice = this.policeData.slice(0, 10)
   })
 }
 
@@ -104,7 +93,8 @@ export class AppComponent implements OnInit, AfterViewInit {
         const marker1 = new google.maps.Marker({
           position : {lat: parseFloat(this.positions[i].location.latitude),lng: parseFloat(this.positions[i].location.longitude)},
           map: this.map,
-          lable: this.positionsArray[i].lable
+          lable: this.positionsArray[i].lable,
+          icon: "../assets/police.png",
         })
         const infoWindow = new google.maps.InfoWindow({
           content: "",
@@ -139,9 +129,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.changeMap(),
         this.getPoliceData(),
         this.getPoliceLocation()
-        this.getPoliceStations()
-        console.log(this.APIReturns.total_count)
-        console.log("requested:", this.ROOT_URL + this.postcodeEntered)
       })
       this.changeMap()
     } else { // if the form is not valid the do the next bunch of bits
@@ -150,7 +137,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   OnPageChange(event: PageEvent) {
-    console.log(event)
     const startIndex = event.pageIndex * event.pageSize;
     let endIndex = startIndex + event.pageSize;
     if (endIndex > this.policeData.length) {
@@ -158,5 +144,4 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
     this.pageSlice = this.policeData.slice(startIndex, endIndex)
   }
-
 }
